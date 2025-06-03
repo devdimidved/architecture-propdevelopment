@@ -1,0 +1,44 @@
+# Cluster Admin Role
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: cluster-admin-role
+rules:
+- apiGroups: [""]
+  resources: ["*"]
+  verbs: ["*"]
+---
+# Developer Role
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  namespace: default
+  name: developer-role
+rules:
+- apiGroups: [""]
+  resources: ["pods", "deployments", "services"]
+  verbs: ["create", "update", "delete", "get", "list", "watch"]
+---
+# Viewer Role
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  namespace: default
+  name: viewer-role
+rules:
+- apiGroups: [""]
+  resources: ["pods", "deployments", "services"]
+  verbs: ["get", "list", "watch"]
+---
+# Security Auditor Role
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: security-auditor-role
+rules:
+- apiGroups: [""]
+  resources: ["secrets", "pods/log"]
+  verbs: ["get", "list", "watch"]
+- apiGroups: ["rbac.authorization.k8s.io"]
+  resources: ["roles", "rolebindings", "clusterroles", "clusterrolebindings"]
+  verbs: ["get", "list", "watch"]
